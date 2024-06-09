@@ -3,22 +3,25 @@
 #include <iostream>
 #include "Scheduler.h"
 #include "generateRandomProcess.h"
-
 int main() {
-    // åˆ›å»ºä¸€ä¸ªéšæœºè¿›ç¨‹ç”Ÿæˆå™¨
-    generateRandomProcess generator;
+    // ´´½¨Ò»¸öµ÷¶ÈÆ÷
+    Scheduler scheduler;
+    scheduler.timeSlice = 100;
+    scheduler.finishTime = 0;
+    scheduler.resources[0] = 10;
+    scheduler.resources[1] = 15;
+    scheduler.resources[2] = 12;
+    scheduler.processCount = 0;
+    scheduler.totalSchedulingTime = 0;
 
-    // åˆ›å»ºä¸€ä¸ªè°ƒåº¦å™¨
-    Scheduler scheduler(std::chrono::milliseconds(100), std::chrono::milliseconds(0), {10, 15, 12});
-
-    // ç”Ÿæˆå¹¶æ·»åŠ éšæœºè¿›ç¨‹
+    // Éú³É²¢Ìí¼ÓËæ»ú½ø³Ì
     for (int i = 0; i < 5; ++i) {
-        PCB process = generator.generateRandomProcessWithCount(i);
-        scheduler.addProcess(process);
+        PCB process = generateRandomProcessWithCount(i);
+        addProcess(&scheduler, process);
     }
 
-    // æ‰§è¡Œè°ƒåº¦
-    scheduler.schedule_round_robin();
+    // Ö´ĞĞµ÷¶È
+    schedule_round_robin(&scheduler);
 
     return 0;
 }
